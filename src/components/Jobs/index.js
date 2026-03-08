@@ -21,6 +21,14 @@ const salaryRangesList = [
   {salaryRangeId: '4000000', label: '40 LPA and above'},
 ]
 
+const locationsList = [
+  {locationId: 'Hyderabad', label: 'Hyderabad'},
+  {locationId: 'Bangalore', label: 'Bangalore'},
+  {locationId: 'Chennai', label: 'Chennai'},
+  {locationId: 'Delhi', label: 'Delhi'},
+  {locationId: 'Mumbai', label: 'Mumbai'},
+]
+
 const apiStatus = {
   initial: 'INITIAL',
   inProgress: 'IN_PROGRESS',
@@ -39,6 +47,7 @@ class Jobs extends Component {
     searchInput: '',
     selectedEmploymentTypes: [],
     selectedSalaryRange: '',
+    selectedLocations: [],
   }
 
   componentDidMount() {
@@ -172,13 +181,17 @@ class Jobs extends Component {
   )
 
   renderJobsSuccess = () => {
-    const {jobsList} = this.state
-    if (jobsList.length === 0) {
+    const {jobsList, selectedLocations} = this.state
+    const filteredJobs =
+      selectedLocations.length > 0
+        ? jobsList.filter(job => selectedLocations.includes(job.location))
+        : jobsList
+    if (filteredJobs.length === 0) {
       return this.renderNoJobs()
     }
     return (
       <ul className="jobs-list">
-        {jobsList.map(job => (
+        {filteredJobs.map(job => (
           <JobCard key={job.id} job={job} />
         ))}
       </ul>
@@ -231,6 +244,19 @@ class Jobs extends Component {
     this.setState({selectedSalaryRange: id}, this.getJobs)
   }
 
+  toggleLocation = id => {
+    this.setState(prevState => {
+      const {selectedLocations} = prevState
+      const isPresent = selectedLocations.includes(id)
+      if (isPresent) {
+        return {
+          selectedLocations: selectedLocations.filter(each => each !== id),
+        }
+      }
+      return {selectedLocations: [...selectedLocations, id]}
+    })
+  }
+
   // ---- UI ----
   renderEmploymentFilters = () => (
     <div className="filters-section">
@@ -263,6 +289,24 @@ class Jobs extends Component {
               onChange={() => this.onChangeSalary(each.salaryRangeId)}
             />
             <label htmlFor={each.salaryRangeId}>{each.label}</label>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+
+  renderLocationFilters = () => (
+    <div className="filters-section">
+      <h1 className="filters-title">Locations</h1>
+      <ul className="filters-list">
+        {locationsList.map(each => (
+          <li className="checkbox-item" key={each.locationId}>
+            <input
+              type="checkbox"
+              id={`loc-${each.locationId}`}
+              onChange={() => this.toggleLocation(each.locationId)}
+            />
+            <label htmlFor={`loc-${each.locationId}`}>{each.label}</label>
           </li>
         ))}
       </ul>
@@ -304,6 +348,8 @@ class Jobs extends Component {
             {this.renderEmploymentFilters()}
             <hr className="separator" />
             {this.renderSalaryFilters()}
+            <hr className="separator" />
+            {this.renderLocationFilters()}
           </aside>
 
           <section className="right-panel">

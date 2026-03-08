@@ -15,6 +15,11 @@
   width: 280px;
   min-width: 280px;
   margin-right: 30px;
+  position: sticky;
+  top: 70px;
+  align-self: flex-start;
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
 }
 
 .right-panel {
@@ -211,6 +216,9 @@
     min-width: auto;
     margin-right: 0;
     margin-bottom: 20px;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .failure-img,

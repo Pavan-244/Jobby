@@ -5,8 +5,21 @@ import {BsSearch} from 'react-icons/bs'
 import Header from '../Header'
 import ProfileCard from '../ProfileCard'
 import JobCard from '../JobCard'
-import {employmentTypesList, salaryRangesList} from '../../App'
 import './index.css'
+
+const employmentTypesList = [
+  {label: 'Full Time', employmentTypeId: 'FULLTIME'},
+  {label: 'Part Time', employmentTypeId: 'PARTTIME'},
+  {label: 'Freelance', employmentTypeId: 'FREELANCE'},
+  {label: 'Internship', employmentTypeId: 'INTERNSHIP'},
+]
+
+const salaryRangesList = [
+  {salaryRangeId: '1000000', label: '10 LPA and above'},
+  {salaryRangeId: '2000000', label: '20 LPA and above'},
+  {salaryRangeId: '3000000', label: '30 LPA and above'},
+  {salaryRangeId: '4000000', label: '40 LPA and above'},
+]
 
 const apiStatus = {
   initial: 'INITIAL',
@@ -58,8 +71,11 @@ class Jobs extends Component {
   getJobs = async () => {
     this.setState({jobsStatus: apiStatus.inProgress})
     const jwtToken = Cookies.get('jwt_token')
-    const {searchInput, selectedEmploymentTypes, selectedSalaryRange} =
-      this.state
+    const {
+      searchInput,
+      selectedEmploymentTypes,
+      selectedSalaryRange,
+    } = this.state
     const employmentParam = selectedEmploymentTypes.join(',')
     const minimumPackage = selectedSalaryRange
     const url = `https://apis.ccbp.in/jobs?employment_type=${employmentParam}&minimum_package=${minimumPackage}&search=${searchInput}`

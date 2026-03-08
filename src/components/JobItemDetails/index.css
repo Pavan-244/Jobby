@@ -1,0 +1,30 @@
+.job-details-container {
+  padding: 20px;
+  background-color: #121212;
+  color: #f8fafc;
+}
+
+.company-logo {
+  width: 60px;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.life-at-company {
+  margin-top: 20px;
+}
+
+.life-at-company-img {
+  width: 100%;
+  border-radius: 10px;
+}
